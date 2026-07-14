@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pad Board จ.ภ.มุกดาหาร — กระดานความคิดออนไลน์</title>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@500;600;700&family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FBFBF7; --ink:#1E2B4F; --ink-soft:#66738F; --ink-faint:#99A2B8;
+  --navy:#1E3D7B; --navy-dark:#152C5B; --navy-tint:#E8EEFA;
+  --orange:#F58220; --orange-dark:#D96A0E; --orange-tint:#FEF0E2;
+  --gold:#F5C242;
+  --line:#E3E6EE; --danger:#D6455B;
+  --n-yellow:#FFF3B4; --n-pink:#FFDFE9; --n-mint:#D9F4E1; --n-sky:#DCEDFF; --n-lavender:#EAE3FF; --n-orange:#FFE7CC; --n-white:#FFFFFF;
+  --shadow:0 1px 2px rgba(21,44,91,.09), 0 6px 18px rgba(21,44,91,.08);
+  --shadow-lift:0 4px 10px rgba(21,44,91,.11), 0 16px 34px rgba(21,44,91,.13);
+  --radius:14px;
+}
+*{box-sizing:border-box; margin:0; padding:0}
+html,body{height:100%}
+body{
+  font-family:'Sarabun',sans-serif; color:var(--ink); font-size:15px; line-height:1.55;
+  background-color:var(--paper);
+  background-image:
+    linear-gradient(rgba(30,61,123,.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30,61,123,.06) 1px, transparent 1px);
+  background-size:26px 26px;
+}
+button{font-family:inherit; cursor:pointer; border:none; background:none; color:inherit}
+input,textarea,select{font-family:inherit; font-size:15px; color:var(--ink)}
+::placeholder{color:var(--ink-faint)}
+
+/* ---------- Header ---------- */
+header{
+  position:sticky; top:0; z-index:40;
+  background:rgba(251,251,247,.93); backdrop-filter:blur(10px);
+  border-bottom:3px solid var(--orange);
+}
+.head-inner{max-width:1440px; margin:0 auto; padding:14px 20px 10px; display:flex; align-items:center; gap:14px; flex-wrap:wrap}
+.logo{
+  font-family:'Prompt',sans-serif; font-weight:700; font-size:19px; color:#fff;
+  background:var(--navy); padding:6px 14px; border-radius:12px 12px 12px 3px;
+  letter-spacing:.2px; flex-shrink:0; box-shadow:var(--shadow);
+  border-bottom:3px solid var(--orange);
+}
+.board-title-wrap{flex:1; min-width:220px}
+#boardTitle{
+  font-family:'Prompt',sans-serif; font-weight:600; font-size:22px; width:100%;
+  border:none; background:transparent; outline:none; color:var(--navy);
+  border-bottom:2px dashed transparent; padding:2px 0;
+}
+#boardTitle:hover,#boardTitle:focus{border-bottom-color:rgba(245,130,32,.5)}
+.board-sub{font-size:12.5px; color:var(--ink-soft)}
+.board-sub b{color:var(--orange-dark)}
+.head-actions{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+.btn{
+  display:inline-flex; align-items:center; gap:7px; padding:9px 15px; border-radius:11px;
+  font-weight:600; font-size:14px; border:1px solid var(--line); background:#fff;
+  color:var(--ink); transition:.15s; white-space:nowrap;
+}
+.btn:hover{border-color:var(--navy); color:var(--navy)}
+.btn.primary{background:var(--navy); color:#fff; border-color:var(--navy); box-shadow:var(--shadow)}
+.btn.primary:hover{background:var(--navy-dark)}
+.btn:active{transform:scale(.97)}
+.online-chip{
+  display:inline-flex; align-items:center; gap:6px; font-size:13px; color:var(--ink-soft);
+  background:#fff; border:1px solid var(--line); padding:7px 12px; border-radius:999px;
+}
+.dot{width:8px; height:8px; border-radius:50%; background:#2FBF71; animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* ---------- Toolbar ---------- */
+.toolbar{max-width:1440px; margin:0 auto; padding:0 20px 12px; display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+.search-wrap{position:relative; flex:1; min-width:180px; max-width:340px}
+.search-wrap input{
+  width:100%; padding:9px 14px 9px 38px; border-radius:11px; border:1px solid var(--line);
+  background:#fff; outline:none; transition:.15s;
+}
+.search-wrap input:focus{border-color:var(--navy); box-shadow:0 0 0 3px rgba(30,61,123,.13)}
+.search-wrap svg{position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--ink-faint)}
+select#sortSel{padding:9px 12px; border-radius:11px; border:1px solid var(--line); background:#fff; outline:none; font-size:14px; font-weight:600}
+.layout-switch{display:flex; background:#fff; border:1px solid var(--line); border-radius:11px; overflow:hidden}
+.layout-switch button{padding:8px 14px; font-size:13.5px; font-weight:700; color:var(--ink-soft); transition:.15s}
+.layout-switch button.active{background:var(--navy); color:#fff}
+.vote-chip{
+  display:inline-flex; align-items:center; gap:7px; padding:8px 14px; border-radius:999px;
+  background:var(--orange-tint); border:1.5px solid var(--orange); color:var(--orange-dark);
+  font-weight:700; font-size:13.5px;
+}
+.gear-wrap{position:relative}
+.gear-menu{
+  position:absolute; right:0; top:44px; background:#fff; border:1px solid var(--line); border-radius:12px;
+  box-shadow:var(--shadow-lift); min-width:230px; overflow:hidden; z-index:50; display:none;
+}
+.gear-menu.open{display:block}
+.gear-menu .gm-label{font-size:11.5px; font-weight:700; color:var(--ink-faint); padding:10px 14px 4px; letter-spacing:.3px}
+.gear-menu button{display:block; width:100%; text-align:left; padding:9px 14px; font-size:13.5px; font-weight:500}
+.gear-menu button:hover{background:var(--navy-tint)}
+.gear-menu button.danger{color:var(--danger)}
+.gear-menu hr{border:none; border-top:1px solid var(--line); margin:4px 0}
+.stats{margin-left:auto; font-size:13px; color:var(--ink-soft)}
+
+/* ---------- Wall layout ---------- */
+.board{max-width:1440px; margin:0 auto; padding:22px 20px 90px}
+.board.wall{columns:4 280px; column-gap:18px}
+
+/* ---------- Columns layout ---------- */
+.board.cols-mode{display:flex; gap:16px; align-items:flex-start; overflow-x:auto; padding-bottom:120px}
+.col{
+  flex:0 0 300px; background:rgba(30,61,123,.045); border:1px solid rgba(30,61,123,.12);
+  border-radius:16px; padding:10px 10px 12px; min-height:140px;
+}
+.col.dragover{background:var(--orange-tint); border-color:var(--orange); border-style:dashed}
+.col-head{display:flex; align-items:center; gap:6px; padding:4px 4px 10px}
+.col-head input{
+  font-family:'Prompt',sans-serif; font-weight:600; font-size:15.5px; color:var(--navy);
+  border:none; background:transparent; outline:none; flex:1; min-width:0;
+  border-bottom:2px dashed transparent;
+}
+.col-head input:hover,.col-head input:focus{border-bottom-color:rgba(245,130,32,.5)}
+.col-count{font-size:12px; font-weight:700; background:var(--navy); color:#fff; border-radius:999px; padding:2px 9px}
+.col-del{color:var(--ink-faint); font-size:15px; padding:3px 7px; border-radius:8px}
+.col-del:hover{background:rgba(214,69,91,.12); color:var(--danger)}
+.col .card{margin-bottom:14px}
+.col-add-post{
+  width:100%; padding:10px; border-radius:11px; border:1.5px dashed rgba(30,61,123,.3);
+  color:var(--navy); font-weight:600; font-size:13.5px; transition:.15s;
+}
+.col-add-post:hover{background:var(--navy-tint); border-style:solid}
+.col-new{
+  flex:0 0 240px; padding:14px; border-radius:16px; border:2px dashed rgba(30,61,123,.25);
+  color:var(--navy); font-weight:700; font-size:14px; min-height:80px; transition:.15s;
+}
+.col-new:hover{background:var(--navy-tint); border-color:var(--navy)}
+
+/* ---------- Card ---------- */
+.card{
+  break-inside:avoid; margin:0 0 18px; border-radius:4px 4px var(--radius) var(--radius);
+  padding:34px 16px 12px; position:relative; box-shadow:var(--shadow);
+  transition:transform .18s ease, box-shadow .18s ease;
+  border:1px solid rgba(21,44,91,.07);
+}
+.board.wall .card:nth-child(odd){transform:rotate(-.5deg)}
+.board.wall .card:nth-child(even){transform:rotate(.45deg)}
+.card:hover{transform:rotate(0) translateY(-3px); box-shadow:var(--shadow-lift); z-index:2}
+.card.dragging{opacity:.45; transform:rotate(2deg) scale(.98)}
+.tape{
+  position:absolute; top:-9px; left:50%; transform:translateX(-50%) rotate(-2deg);
+  width:86px; height:22px; background:rgba(245,130,32,.28); border-radius:3px;
+  border-left:1px dashed rgba(255,255,255,.85); border-right:1px dashed rgba(255,255,255,.85);
+}
+.card.pinned .tape{background:rgba(30,61,123,.3)}
+.pin-flag{
+  position:absolute; top:8px; right:10px; font-size:11.5px; font-weight:700; color:var(--navy);
+  display:none; letter-spacing:.3px;
+}
+.card.pinned .pin-flag{display:block}
+.drag-grip{position:absolute; top:9px; left:12px; color:rgba(21,44,91,.28); font-size:13px; letter-spacing:2px; cursor:grab; user-select:none}
+.card-head{display:flex; align-items:center; gap:9px; margin-bottom:8px}
+.avatar{
+  width:32px; height:32px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center;
+  font-family:'Prompt',sans-serif; font-weight:600; font-size:13px; color:#fff;
+}
+.card-author{font-weight:700; font-size:13.5px; line-height:1.2}
+.card-time{font-size:11.5px; color:var(--ink-soft)}
+.card-menu{margin-left:auto; position:relative}
+.dots-btn{padding:4px 8px; border-radius:8px; color:var(--ink-soft); font-weight:700; letter-spacing:1px}
+.dots-btn:hover{background:rgba(21,44,91,.08)}
+.menu-pop{
+  position:absolute; right:0; top:26px; background:#fff; border:1px solid var(--line); border-radius:11px;
+  box-shadow:var(--shadow-lift); min-width:170px; overflow:hidden; z-index:20; display:none;
+}
+.menu-pop.open{display:block}
+.menu-pop button{display:block; width:100%; text-align:left; padding:9px 14px; font-size:13.5px; font-weight:500}
+.menu-pop button:hover{background:var(--navy-tint)}
+.menu-pop button.danger{color:var(--danger)}
+.menu-pop .mv-label{font-size:11px; font-weight:700; color:var(--ink-faint); padding:8px 14px 2px}
+.card-title{font-family:'Prompt',sans-serif; font-weight:600; font-size:16.5px; margin-bottom:5px; line-height:1.35; overflow-wrap:anywhere; color:var(--navy-dark)}
+.card-text{font-size:14.5px; white-space:pre-wrap; overflow-wrap:anywhere}
+.card-img{width:100%; border-radius:10px; margin-top:10px; display:block; border:1px solid rgba(21,44,91,.09)}
+.card-link{
+  display:flex; align-items:center; gap:8px; margin-top:10px; padding:9px 12px; border-radius:10px;
+  background:rgba(255,255,255,.65); border:1px solid rgba(21,44,91,.11); font-size:13px; color:var(--navy);
+  text-decoration:none; font-weight:600; overflow-wrap:anywhere;
+}
+.card-link:hover{background:#fff}
+.card-tags{display:flex; gap:6px; flex-wrap:wrap; margin-top:10px}
+.tag{font-size:11.5px; font-weight:700; padding:3px 9px; border-radius:999px; background:rgba(21,44,91,.09); color:var(--ink-soft)}
+.tag:hover{background:rgba(245,130,32,.2); color:var(--orange-dark); cursor:pointer}
+
+/* vote */
+.vote-row{display:flex; align-items:center; gap:6px; margin-top:12px}
+.vote-btn{
+  display:inline-flex; align-items:center; gap:6px; font-size:13.5px; font-weight:700;
+  padding:6px 13px; border-radius:999px; background:var(--orange); color:#fff;
+  box-shadow:0 2px 6px rgba(245,130,32,.35); transition:.13s;
+}
+.vote-btn:hover{background:var(--orange-dark); transform:scale(1.05)}
+.vote-btn .vc{background:rgba(255,255,255,.25); border-radius:999px; padding:0 8px; font-size:12.5px}
+.vote-btn.mine{outline:2px solid var(--navy); outline-offset:1px}
+.vote-minus{
+  width:26px; height:26px; border-radius:50%; background:#fff; border:1.5px solid var(--orange);
+  color:var(--orange-dark); font-weight:800; font-size:15px; line-height:1; transition:.13s;
+}
+.vote-minus:hover{background:var(--orange-tint)}
+.vote-bar{height:5px; border-radius:99px; background:rgba(21,44,91,.1); flex:1; overflow:hidden}
+.vote-bar i{display:block; height:100%; background:var(--orange); border-radius:99px}
+
+/* reactions */
+.react-row{display:flex; gap:5px; margin-top:10px; padding-top:10px; border-top:1px dashed rgba(21,44,91,.17); flex-wrap:wrap; align-items:center}
+.react-btn{
+  display:inline-flex; align-items:center; gap:4px; font-size:13px; padding:4px 9px; border-radius:999px;
+  background:rgba(255,255,255,.7); border:1px solid rgba(21,44,91,.11); transition:.13s; font-weight:600; color:var(--ink-soft);
+}
+.react-btn:hover{transform:scale(1.08); border-color:var(--navy)}
+.react-btn.on{background:var(--navy-tint); border-color:var(--navy); color:var(--navy)}
+.cmt-toggle{margin-left:auto; font-size:12.5px; color:var(--ink-soft); font-weight:600; padding:4px 8px; border-radius:8px}
+.cmt-toggle:hover{background:rgba(21,44,91,.08)}
+.cmt-box{margin-top:10px; display:none}
+.cmt-box.open{display:block}
+.cmt{display:flex; gap:8px; margin-bottom:8px; font-size:13px}
+.cmt .avatar{width:24px; height:24px; font-size:10px}
+.cmt-body{background:rgba(255,255,255,.78); border:1px solid rgba(21,44,91,.09); border-radius:4px 12px 12px 12px; padding:6px 10px; flex:1}
+.cmt-body b{font-size:12px}
+.cmt-input{display:flex; gap:6px}
+.cmt-input input{flex:1; border:1px solid rgba(21,44,91,.17); border-radius:10px; padding:7px 11px; outline:none; background:rgba(255,255,255,.88); font-size:13.5px}
+.cmt-input input:focus{border-color:var(--navy)}
+.cmt-input button{background:var(--navy); color:#fff; border-radius:10px; padding:0 13px; font-weight:700; font-size:13px}
+
+.empty{column-span:all; width:100%; text-align:center; padding:70px 20px; color:var(--ink-soft)}
+.empty h2{font-family:'Prompt',sans-serif; font-size:22px; color:var(--navy); margin-bottom:8px}
+
+.fab{
+  position:fixed; right:26px; bottom:26px; z-index:45; width:60px; height:60px; border-radius:50%;
+  background:var(--orange); color:#fff; font-size:30px; box-shadow:0 8px 24px rgba(245,130,32,.5);
+  transition:.15s; display:flex; align-items:center; justify-content:center; line-height:1;
+}
+.fab:hover{transform:scale(1.08) rotate(90deg); background:var(--orange-dark)}
+
+/* ---------- Modals ---------- */
+.overlay{
+  position:fixed; inset:0; background:rgba(15,26,50,.5); backdrop-filter:blur(3px);
+  z-index:60; display:none; align-items:center; justify-content:center; padding:18px;
+}
+.overlay.open{display:flex}
+.modal{
+  background:#fff; border-radius:18px; width:100%; max-width:520px; max-height:92vh; overflow:auto;
+  box-shadow:0 24px 60px rgba(15,26,50,.4); animation:pop .18s ease;
+  border-top:4px solid var(--orange);
+}
+@keyframes pop{from{transform:scale(.94); opacity:0} to{transform:scale(1); opacity:1}}
+.modal-head{padding:18px 22px 0; display:flex; align-items:center; justify-content:space-between}
+.modal-head h2{font-family:'Prompt',sans-serif; font-size:19px; font-weight:600; color:var(--navy)}
+.x-btn{font-size:20px; color:var(--ink-soft); padding:4px 10px; border-radius:9px}
+.x-btn:hover{background:rgba(21,44,91,.08)}
+.modal-body{padding:16px 22px 22px; display:flex; flex-direction:column; gap:13px}
+.field label{display:block; font-size:13px; font-weight:700; color:var(--ink-soft); margin-bottom:5px}
+.field input[type=text],.field input[type=url],.field textarea,.field select{
+  width:100%; border:1px solid var(--line); border-radius:11px; padding:10px 13px; outline:none; transition:.15s; background:#FCFCFA;
+}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--navy); box-shadow:0 0 0 3px rgba(30,61,123,.13); background:#fff}
+.field textarea{min-height:96px; resize:vertical}
+.color-row{display:flex; gap:9px; flex-wrap:wrap}
+.color-pick{width:34px; height:34px; border-radius:11px; border:2px solid rgba(21,44,91,.14); transition:.13s}
+.color-pick.sel{border-color:var(--navy); transform:scale(1.12)}
+.img-drop{
+  border:2px dashed var(--line); border-radius:12px; padding:14px; text-align:center; font-size:13px;
+  color:var(--ink-soft); cursor:pointer; transition:.15s;
+}
+.img-drop:hover{border-color:var(--orange); color:var(--orange-dark)}
+.img-prev{max-width:100%; border-radius:10px; margin-top:8px; display:none}
+.modal-foot{display:flex; gap:10px; justify-content:flex-end; padding-top:4px}
+.hint{font-size:12px; color:var(--ink-faint)}
+
+#toast{
+  position:fixed; left:50%; bottom:100px; transform:translateX(-50%) translateY(20px); z-index:80;
+  background:var(--navy); color:#fff; padding:10px 18px; border-radius:12px; font-size:14px; font-weight:600;
+  opacity:0; pointer-events:none; transition:.25s; border-bottom:3px solid var(--orange);
+}
+#toast.show{opacity:1; transform:translateX(-50%) translateY(0)}
+
+@media (max-width:640px){
+  .board.wall{columns:2 160px; padding:16px 12px 90px}
+  .col{flex:0 0 260px}
+  #boardTitle{font-size:18px}
+  .logo{font-size:15px}
+  .stats{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important; transition:none!important}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="head-inner">
+    <div class="logo">pad board</div>
+    <div class="board-title-wrap">
+      <input id="boardTitle" value="กระดานความคิด จ.ภ.มุกดาหาร" maxlength="80" aria-label="ชื่อกระดาน">
+      <div class="board-sub">โรงเรียนวิทยาศาสตร์<b>จุฬาภรณราชวิทยาลัย มุกดาหาร</b> · น้ำเงิน–แสด · แชร์ความคิดได้ทุกที่ ทุกเวลา</div>
+    </div>
+    <div class="head-actions">
+      <span class="online-chip"><span class="dot"></span><span id="meName">…</span></span>
+      <button class="btn" id="refreshBtn" title="โหลดโพสต์ล่าสุด">⟳ รีเฟรช</button>
+      <button class="btn" id="exportBtn" title="ส่งออกเป็น Markdown">⤓ ส่งออก</button>
+      <button class="btn primary" id="newPostBtn">+ สร้างโพสต์</button>
+    </div>
+  </div>
+  <div class="toolbar">
+    <div class="search-wrap">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="searchInput" placeholder="ค้นหาโพสต์ ชื่อคน หรือ #แท็ก…">
+    </div>
+    <div class="layout-switch" role="tablist" aria-label="รูปแบบกระดาน">
+      <button id="layoutWall" role="tab">🧱 กำแพง</button>
+      <button id="layoutCols" role="tab">📊 คอลัมน์</button>
+    </div>
+    <select id="sortSel" aria-label="เรียงลำดับ">
+      <option value="new">ใหม่ล่าสุด</option>
+      <option value="vote">คะแนนโหวต 🗳️</option>
+      <option value="hot">รีแอคชันเยอะ</option>
+      <option value="cmt">คอมเมนต์เยอะ</option>
+      <option value="old">เก่าสุดก่อน</option>
+    </select>
+    <span class="vote-chip" title="คะแนนโหวตของคุณ">🗳️ เหลือ <span id="voteLeft">–</span> คะแนน</span>
+    <div class="gear-wrap">
+      <button class="btn" id="gearBtn" aria-label="ตั้งค่ากระดาน">⚙️</button>
+      <div class="gear-menu" id="gearMenu">
+        <div class="gm-label">เทมเพลตคอลัมน์</div>
+        <button data-tpl="kanban">📋 Kanban — สิ่งที่ต้องทำ/กำลังทำ/เสร็จ</button>
+        <button data-tpl="affinity">🗂️ Affinity — จัดกลุ่มไอเดีย</button>
+        <button data-tpl="dt">💡 Design Thinking — 5 ขั้น</button>
+        <button data-tpl="swot">🎯 SWOT Analysis</button>
+        <hr>
+        <div class="gm-label">การโหวต (Dot Voting)</div>
+        <button data-budget="3">คะแนนโหวตต่อคน: 3</button>
+        <button data-budget="5">คะแนนโหวตต่อคน: 5</button>
+        <button data-budget="10">คะแนนโหวตต่อคน: 10</button>
+        <button id="resetVotesBtn" class="danger">♻️ ล้างคะแนนโหวตทั้งหมด (เริ่มรอบใหม่)</button>
+      </div>
+    </div>
+    <div class="stats" id="stats"></div>
+  </div>
+</header>
+
+<main class="board wall" id="board" aria-live="polite"></main>
+
+<button class="fab" id="fabBtn" aria-label="สร้างโพสต์ใหม่">+</button>
+<div id="toast" role="status"></div>
+
+<!-- name modal -->
+<div class="overlay" id="nameOverlay">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-head"><h2>ยินดีต้อนรับสู่ Pad Board จ.ภ.ม. 👋</h2></div>
+    <div class="modal-body">
+      <div class="field">
+        <label>ชื่อที่จะแสดงบนกระดาน</label>
+        <input type="text" id="nameInput" placeholder="เช่น ครูชา, Aomsin, ม.1/1 กลุ่ม 3" maxlength="30">
+        <div class="hint" style="margin-top:6px">ชื่อของคุณจะแสดงบนโพสต์ คอมเมนต์ รีแอคชัน และการโหวต</div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn primary" id="nameSaveBtn" style="width:100%; justify-content:center">เริ่มใช้งาน</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- post modal -->
+<div class="overlay" id="postOverlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="postModalTitle">สร้างโพสต์ใหม่</h2>
+      <button class="x-btn" data-close="postOverlay" aria-label="ปิด">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label>หัวข้อ</label>
+        <input type="text" id="pTitle" placeholder="เช่น ไอเดียโครงงานวิทยาศาสตร์" maxlength="120">
+      </div>
+      <div class="field">
+        <label>ข้อความ</label>
+        <textarea id="pText" placeholder="เล่าไอเดีย แชร์ความรู้ หรือชวนคุย… ใส่ #แท็ก ได้เลย"></textarea>
+      </div>
+      <div class="field" id="colField" style="display:none">
+        <label>คอลัมน์</label>
+        <select id="pCol"></select>
+      </div>
+      <div class="field">
+        <label>รูปภาพ (ไม่บังคับ)</label>
+        <div class="img-drop" id="imgDrop">📷 คลิกเพื่อแนบรูปจากเครื่อง หรือวางลิงก์รูปด้านล่าง</div>
+        <input type="file" id="imgFile" accept="image/*" hidden>
+        <img class="img-prev" id="imgPrev" alt="ตัวอย่างรูป">
+        <input type="url" id="pImgUrl" placeholder="https://… (ลิงก์รูปภาพ)" style="margin-top:8px; width:100%; border:1px solid var(--line); border-radius:11px; padding:9px 13px; outline:none; background:#FCFCFA">
+      </div>
+      <div class="field">
+        <label>ลิงก์ / URL (ไม่บังคับ)</label>
+        <input type="url" id="pUrl" placeholder="https://…">
+      </div>
+      <div class="field">
+        <label>สีโน้ต</label>
+        <div class="color-row" id="colorRow"></div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn" data-close="postOverlay">ยกเลิก</button>
+        <button class="btn primary" id="postSaveBtn">โพสต์ลงกระดาน</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+if(!window.storage){
+  const mem = {};
+  window.storage = {
+    async get(k){ if(!(k in mem)) throw new Error('not found'); return {key:k, value:mem[k]}; },
+    async set(k,v){ mem[k]=v; return {key:k, value:v}; },
+    async delete(k){ delete mem[k]; return {key:k, deleted:true}; },
+    async list(){ return {keys:Object.keys(mem)}; }
+  };
+}
+/* ================= constants ================= */
+const NOTE_COLORS = [
+  {id:'yellow', hex:'#FFF3B4'}, {id:'orange', hex:'#FFE7CC'}, {id:'pink', hex:'#FFDFE9'},
+  {id:'mint', hex:'#D9F4E1'}, {id:'sky', hex:'#DCEDFF'}, {id:'lavender', hex:'#EAE3FF'}, {id:'white', hex:'#FFFFFF'}
+];
+const REACTS = [
+  {id:'love', emo:'❤️', label:'รักเลย'},
+  {id:'like', emo:'👍', label:'ชอบ'},
+  {id:'wow',  emo:'😮', label:'ว้าว'},
+  {id:'idea', emo:'💡', label:'เจ๋ง'}
+];
+const TEMPLATES = {
+  kanban:  ['📌 สิ่งที่ต้องทำ', '🔄 กำลังทำ', '🔍 รอตรวจสอบ', '✅ เสร็จแล้ว'],
+  affinity:['💭 ไอเดียใหม่ (ยังไม่จัดกลุ่ม)', '📚 ด้านเนื้อหา/วิชาการ', '🎲 ด้านกิจกรรม', '⭐ ไอเดียเด่นที่คัดเลือก'],
+  dt:      ['🤝 Empathize', '🎯 Define', '💡 Ideate', '🛠️ Prototype', '🧪 Test'],
+  swot:    ['💪 Strengths จุดแข็ง', '⚠️ Weaknesses จุดอ่อน', '🌱 Opportunities โอกาส', '⛈️ Threats อุปสรรค']
+};
+const AV_COLORS = ['#1E3D7B','#F58220','#0FA36B','#D6455B','#7A4FD1','#0E8FA3','#C13FA0','#B4560E'];
+const KEY = 'padboard:v1';
+
+let me = null, board = null, selColor = 'yellow', editingId = null, imgData = '', dirty = false, dragId = null;
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+
+function toast(msg){
+  const t = $('toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(t._h); t._h = setTimeout(()=>t.classList.remove('show'), 2300);
+}
+function avColor(name){
+  let h = 0; for(const c of String(name)) h = (h*31 + c.charCodeAt(0)) >>> 0;
+  return AV_COLORS[h % AV_COLORS.length];
+}
+function initials(name){
+  const n = String(name||'?').trim();
+  return n.slice(0, /[\u0E00-\u0E7F]/.test(n) ? 1 : 2).toUpperCase();
+}
+function timeAgo(ts){
+  const d = Math.floor((Date.now()-ts)/1000);
+  if(d < 60) return 'เมื่อสักครู่';
+  if(d < 3600) return Math.floor(d/60)+' นาทีที่แล้ว';
+  if(d < 86400) return Math.floor(d/3600)+' ชั่วโมงที่แล้ว';
+  if(d < 604800) return Math.floor(d/86400)+' วันที่แล้ว';
+  return new Date(ts).toLocaleDateString('th-TH', {day:'numeric', month:'short', year:'numeric'});
+}
+const voteTotal = p => Object.values(p.votes||{}).reduce((a,n)=>a+n,0);
+const reactTotal = p => Object.values(p.reactions||{}).reduce((a,arr)=>a+arr.length,0);
+function myVotesUsed(){
+  return board.posts.reduce((a,p)=>a + ((p.votes||{})[me.name]||0), 0);
+}
+
+/* ================= storage ================= */
+async function loadMe(){
+  try{ const r = await window.storage.get('padboard:me'); me = JSON.parse(r.value); }catch(e){ me = null; }
+}
+async function saveMe(){ try{ await window.storage.set('padboard:me', JSON.stringify(me)); }catch(e){} }
+
+function migrate(b){
+  b.title = b.title || 'กระดานความคิด จ.ภ.มุกดาหาร';
+  b.layout = b.layout || 'wall';
+  b.voteBudget = b.voteBudget || 5;
+  if(!Array.isArray(b.columns) || !b.columns.length){
+    b.columns = TEMPLATES.affinity.map(n=>({id:uid(), name:n}));
+  }
+  b.posts = (b.posts||[]).map(p=>({
+    reactions:{love:[],like:[],wow:[],idea:[]}, comments:[], votes:{}, ...p,
+    votes: p.votes || {}, col: p.col || b.columns[0].id
+  }));
+  return b;
+}
+function seedBoard(){
+  const now = Date.now();
+  return migrate({ title:'กระดานความคิด จ.ภ.มุกดาหาร', posts:[
+    { id:uid(), author:'Pad Board', title:'ยินดีต้อนรับสู่กระดานความคิด 🎉',
+      text:'กด + สร้างโพสต์ เพื่อแชร์ไอเดีย รูปภาพ หรือลิงก์\n\n🗳️ กดปุ่มโหวตสีแสดเพื่อให้คะแนนไอเดียที่ชอบ (Dot Voting — แต่ละคนมีคะแนนจำกัด)\n📊 สลับมุมมอง "คอลัมน์" แล้วลากโพสต์ไปจัดกลุ่มแบบ Kanban/Affinity ได้เลย\n⚙️ ครูผู้สอนใช้เมนูตั้งค่าเพื่อเลือกเทมเพลตคอลัมน์และเริ่มรอบโหวตใหม่\n\nลองใส่ #แท็ก ในข้อความ แล้วคลิกแท็กเพื่อกรองโพสต์',
+      img:'', url:'', color:'sky', ts:now-60000, pinned:true,
+      reactions:{love:[],like:[],wow:[],idea:[]}, comments:[], votes:{} }
+  ]});
+}
+async function loadBoard(){
+  try{
+    const r = await window.storage.get(KEY, true);
+    board = migrate(JSON.parse(r.value));
+    if(!Array.isArray(board.posts)) throw 0;
+  }catch(e){
+    board = seedBoard();
+    try{ await window.storage.set(KEY, JSON.stringify(board), true); }catch(_){}
+  }
+}
+async function saveBoard(){
+  try{ await window.storage.set(KEY, JSON.stringify(board), true); }
+  catch(e){ toast('บันทึกไม่สำเร็จ ลองอีกครั้ง'); }
+}
+async function mutate(fn){
+  await loadBoard();
+  fn(board);
+  await saveBoard();
+  render();
+}
+
+/* ================= render ================= */
+function hashTags(text){
+  return (String(text).match(/#[\w\u0E00-\u0E7Fa-zA-Z0-9_]+/g) || []).slice(0,6);
+}
+function sortPosts(list){
+  const mode = $('sortSel').value;
+  const arr = [...list];
+  if(mode==='new') arr.sort((a,b)=>b.ts-a.ts);
+  if(mode==='old') arr.sort((a,b)=>a.ts-b.ts);
+  if(mode==='hot') arr.sort((a,b)=>reactTotal(b)-reactTotal(a) || b.ts-a.ts);
+  if(mode==='cmt') arr.sort((a,b)=>(b.comments||[]).length-(a.comments||[]).length || b.ts-a.ts);
+  if(mode==='vote') arr.sort((a,b)=>voteTotal(b)-voteTotal(a) || b.ts-a.ts);
+  return arr.sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0));
+}
+function filteredPosts(){
+  const q = $('searchInput').value.trim().toLowerCase();
+  return board.posts.filter(p=>{
+    if(!q) return true;
+    return [p.title, p.text, p.author].join(' ').toLowerCase().includes(q);
+  });
+}
+function cardHTML(p, maxVote){
+  const c = NOTE_COLORS.find(n=>n.id===p.color) || NOTE_COLORS[0];
+  const tags = hashTags(p.text);
+  const cmts = p.comments || [];
+  const mine = p.author === me.name;
+  const vTotal = voteTotal(p);
+  const myV = (p.votes||{})[me.name]||0;
+  const openCmt = (window._openCmts||new Set()).has(p.id);
+  const cols = board.layout==='cols';
+  const barW = maxVote > 0 ? Math.round(vTotal/maxVote*100) : 0;
+  return `
+  <article class="card ${p.pinned?'pinned':''}" style="background:${c.hex}" ${cols?`draggable="true" data-drag="${p.id}"`:''}>
+    <div class="tape"></div>
+    ${cols?'<div class="drag-grip" title="ลากเพื่อย้ายคอลัมน์">⠿⠿</div>':''}
+    <div class="pin-flag">📌 ปักหมุด</div>
+    <div class="card-head">
+      <div class="avatar" style="background:${avColor(p.author)}">${esc(initials(p.author))}</div>
+      <div>
+        <div class="card-author">${esc(p.author)}</div>
+        <div class="card-time">${timeAgo(p.ts)}${p.edited?' · แก้ไขแล้ว':''}</div>
+      </div>
+      <div class="card-menu">
+        <button class="dots-btn" data-menu="${p.id}" aria-label="เมนูโพสต์">•••</button>
+        <div class="menu-pop" id="menu-${p.id}">
+          <button data-act="pin" data-id="${p.id}">${p.pinned?'ถอนหมุด':'📌 ปักหมุด'}</button>
+          ${cols?`<div class="mv-label">ย้ายไปคอลัมน์</div>
+          ${board.columns.filter(col=>col.id!==p.col).map(col=>
+            `<button data-act="move" data-id="${p.id}" data-col="${col.id}">➜ ${esc(col.name)}</button>`).join('')}`:''}
+          ${mine?`<button data-act="edit" data-id="${p.id}">✏️ แก้ไขโพสต์</button>
+          <button data-act="del" data-id="${p.id}" class="danger">🗑 ลบโพสต์</button>`:''}
+        </div>
+      </div>
+    </div>
+    ${p.title?`<div class="card-title">${esc(p.title)}</div>`:''}
+    ${p.text?`<div class="card-text">${esc(p.text)}</div>`:''}
+    ${p.img?`<img class="card-img" src="${esc(p.img)}" alt="รูปประกอบโพสต์" loading="lazy" onerror="this.remove()">`:''}
+    ${p.url?`<a class="card-link" href="${esc(p.url)}" target="_blank" rel="noopener">🔗 <span>${esc(p.url.replace(/^https?:\/\//,'').slice(0,52))}</span></a>`:''}
+    ${tags.length?`<div class="card-tags">${tags.map(t=>`<span class="tag" data-tag="${esc(t)}">${esc(t)}</span>`).join('')}</div>`:''}
+    <div class="vote-row">
+      <button class="vote-btn ${myV?'mine':''}" data-vote="${p.id}" title="โหวตให้ไอเดียนี้ (คุณโหวตแล้ว ${myV})">🗳️ โหวต <span class="vc">${vTotal}</span></button>
+      ${myV?`<button class="vote-minus" data-unvote="${p.id}" title="ถอนโหวต 1 คะแนน">−</button>`:''}
+      <div class="vote-bar" title="สัดส่วนคะแนนเทียบไอเดียที่ได้สูงสุด"><i style="width:${barW}%"></i></div>
+    </div>
+    <div class="react-row">
+      ${REACTS.map(r=>{
+        const arr = (p.reactions&&p.reactions[r.id])||[];
+        const on = arr.includes(me.name);
+        return `<button class="react-btn ${on?'on':''}" data-react="${r.id}" data-id="${p.id}" title="${r.label}${arr.length?': '+arr.map(esc).join(', '):''}">${r.emo}${arr.length?` ${arr.length}`:''}</button>`;
+      }).join('')}
+      <button class="cmt-toggle" data-cmt="${p.id}">💬 ${cmts.length||''} ${cmts.length?'':'คอมเมนต์'}</button>
+    </div>
+    <div class="cmt-box ${openCmt?'open':''}" data-pid="${p.id}">
+      ${cmts.map(cm=>`
+        <div class="cmt">
+          <div class="avatar" style="background:${avColor(cm.author)}">${esc(initials(cm.author))}</div>
+          <div class="cmt-body"><b>${esc(cm.author)}</b> · <span style="color:var(--ink-soft); font-size:11px">${timeAgo(cm.ts)}</span><br>${esc(cm.text)}</div>
+        </div>`).join('')}
+      <div class="cmt-input">
+        <input placeholder="เขียนคอมเมนต์…" data-cinput="${p.id}" maxlength="500">
+        <button data-csend="${p.id}">ส่ง</button>
+      </div>
+    </div>
+  </article>`;
+}
+function render(){
+  if(!board || !me) return;
+  if(document.activeElement !== $('boardTitle')) $('boardTitle').value = board.title;
+  window._openCmts = new Set([...document.querySelectorAll('.cmt-box.open')].map(el=>el.dataset.pid));
+
+  $('layoutWall').classList.toggle('active', board.layout!=='cols');
+  $('layoutCols').classList.toggle('active', board.layout==='cols');
+  const used = myVotesUsed();
+  $('voteLeft').textContent = Math.max(0, board.voteBudget - used) + '/' + board.voteBudget;
+
+  const list = sortPosts(filteredPosts());
+  const maxVote = Math.max(0, ...board.posts.map(voteTotal));
+  const el = $('board');
+  const q = $('searchInput').value.trim();
+
+  if(board.layout === 'cols'){
+    el.className = 'board cols-mode';
+    el.innerHTML = board.columns.map(col=>{
+      const posts = list.filter(p=>p.col===col.id || (!board.columns.some(c=>c.id===p.col) && col.id===board.columns[0].id));
+      return `
+      <section class="col" data-colzone="${col.id}">
+        <div class="col-head">
+          <input value="${esc(col.name)}" maxlength="60" data-colname="${col.id}" aria-label="ชื่อคอลัมน์">
+          <span class="col-count">${posts.length}</span>
+          ${board.columns.length>1?`<button class="col-del" data-coldel="${col.id}" title="ลบคอลัมน์ (โพสต์จะย้ายไปคอลัมน์แรก)">✕</button>`:''}
+        </div>
+        ${posts.map(p=>cardHTML(p, maxVote)).join('')}
+        <button class="col-add-post" data-addto="${col.id}">+ โพสต์ในคอลัมน์นี้</button>
+      </section>`;
+    }).join('') + `<button class="col-new" id="colNewBtn">+ เพิ่มคอลัมน์</button>`;
+  } else {
+    el.className = 'board wall';
+    el.innerHTML = list.length ? list.map(p=>cardHTML(p, maxVote)).join('')
+      : `<div class="empty"><h2>${q ? 'ไม่พบโพสต์ที่ค้นหา' : 'กระดานยังว่างอยู่'}</h2><p>${q ? 'ลองคำค้นอื่น' : 'เริ่มโพสต์แรกของกระดานนี้ได้เลย'}</p></div>`;
+  }
+
+  const totalV = board.posts.reduce((a,p)=>a+voteTotal(p),0);
+  const totalC = board.posts.reduce((a,p)=>a+(p.comments||[]).length,0);
+  $('stats').textContent = `${board.posts.length} โพสต์ · ${totalV} โหวต · ${totalC} คอมเมนต์`;
+  bindDnD();
+}
+
+/* ================= drag & drop ================= */
+function bindDnD(){
+  if(board.layout !== 'cols') return;
+  document.querySelectorAll('[data-drag]').forEach(card=>{
+    card.addEventListener('dragstart', e=>{
+      dragId = card.dataset.drag; card.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    card.addEventListener('dragend', ()=>{ card.classList.remove('dragging'); dragId = null;
+      document.querySelectorAll('.col.dragover').forEach(c=>c.classList.remove('dragover')); });
+  });
+  document.querySelectorAll('[data-colzone]').forEach(zone=>{
+    zone.addEventListener('dragover', e=>{ e.preventDefault(); zone.classList.add('dragover'); });
+    zone.addEventListener('dragleave', ()=> zone.classList.remove('dragover'));
+    zone.addEventListener('drop', async e=>{
+      e.preventDefault(); zone.classList.remove('dragover');
+      if(!dragId) return;
+      const target = zone.dataset.colzone, id = dragId; dragId = null;
+      await mutate(b=>{ const p = b.posts.find(x=>x.id===id); if(p) p.col = target; });
+      toast('ย้ายโพสต์แล้ว');
+    });
+  });
+}
+
+/* ================= events ================= */
+document.addEventListener('click', async e=>{
+  if(!e.target.closest('.gear-wrap')) $('gearMenu').classList.remove('open');
+  const t = e.target.closest('[data-menu],[data-act],[data-react],[data-cmt],[data-csend],[data-tag],[data-close],[data-vote],[data-unvote],[data-addto],[data-coldel],[data-tpl],[data-budget],#colNewBtn');
+  document.querySelectorAll('.menu-pop.open').forEach(m=>{ if(!e.target.closest('.card-menu')) m.classList.remove('open'); });
+  if(!t) return;
+
+  if(t.dataset.close){ closeModal(t.dataset.close); return; }
+
+  if(t.dataset.menu){
+    const m = $('menu-'+t.dataset.menu);
+    const was = m.classList.contains('open');
+    document.querySelectorAll('.menu-pop.open').forEach(x=>x.classList.remove('open'));
+    if(!was) m.classList.add('open');
+    return;
+  }
+  if(t.dataset.tag){ $('searchInput').value = t.dataset.tag; render(); return; }
+
+  /* ---- voting ---- */
+  if(t.dataset.vote){
+    const id = t.dataset.vote;
+    if(myVotesUsed() >= board.voteBudget){ toast(`คะแนนโหวตหมดแล้ว (${board.voteBudget} คะแนน) — ถอนโหวตจากไอเดียอื่นก่อนได้`); return; }
+    await mutate(b=>{
+      const p = b.posts.find(x=>x.id===id); if(!p) return;
+      p.votes = p.votes || {};
+      p.votes[me.name] = (p.votes[me.name]||0) + 1;
+    });
+    return;
+  }
+  if(t.dataset.unvote){
+    const id = t.dataset.unvote;
+    await mutate(b=>{
+      const p = b.posts.find(x=>x.id===id); if(!p || !p.votes) return;
+      const n = (p.votes[me.name]||0) - 1;
+      if(n <= 0) delete p.votes[me.name]; else p.votes[me.name] = n;
+    });
+    return;
+  }
+
+  if(t.dataset.react){
+    const {react, id} = t.dataset;
+    await mutate(b=>{
+      const p = b.posts.find(x=>x.id===id); if(!p) return;
+      p.reactions = p.reactions || {love:[],like:[],wow:[],idea:[]};
+      const arr = p.reactions[react] = p.reactions[react] || [];
+      const i = arr.indexOf(me.name);
+      i >= 0 ? arr.splice(i,1) : arr.push(me.name);
+    });
+    return;
+  }
+  if(t.dataset.cmt){
+    const box = document.querySelector(`.cmt-box[data-pid="${t.dataset.cmt}"]`);
+    box.classList.toggle('open');
+    if(box.classList.contains('open')) box.querySelector('input').focus();
+    return;
+  }
+  if(t.dataset.csend){ await sendComment(t.dataset.csend); return; }
+
+  /* ---- columns ---- */
+  if(t.id === 'colNewBtn'){
+    await mutate(b=>{ b.columns.push({id:uid(), name:'คอลัมน์ใหม่'}); });
+    toast('เพิ่มคอลัมน์แล้ว — คลิกชื่อเพื่อแก้ไข');
+    return;
+  }
+  if(t.dataset.coldel){
+    const cid = t.dataset.coldel;
+    if(!confirm('ลบคอลัมน์นี้ใช่ไหม โพสต์ในคอลัมน์จะถูกย้ายไปคอลัมน์แรก')) return;
+    await mutate(b=>{
+      b.columns = b.columns.filter(c=>c.id!==cid);
+      const first = b.columns[0].id;
+      b.posts.forEach(p=>{ if(p.col===cid) p.col = first; });
+    });
+    return;
+  }
+  if(t.dataset.addto){
+    resetPostForm();
+    $('pCol').value = t.dataset.addto;
+    openModal('postOverlay'); $('pTitle').focus();
+    return;
+  }
+
+  /* ---- settings ---- */
+  if(t.dataset.tpl){
+    const tpl = t.dataset.tpl;
+    if(!confirm('ใช้เทมเพลตนี้แทนคอลัมน์ปัจจุบันใช่ไหม โพสต์ทั้งหมดจะย้ายไปคอลัมน์แรกของเทมเพลต')) return;
+    await mutate(b=>{
+      b.columns = TEMPLATES[tpl].map(n=>({id:uid(), name:n}));
+      const first = b.columns[0].id;
+      b.posts.forEach(p=>p.col = first);
+      b.layout = 'cols';
+    });
+    $('gearMenu').classList.remove('open');
+    toast('ใช้เทมเพลตแล้ว — ลากโพสต์ไปจัดกลุ่มได้เลย');
+    return;
+  }
+  if(t.dataset.budget){
+    const n = parseInt(t.dataset.budget);
+    await mutate(b=>{ b.voteBudget = n; });
+    $('gearMenu').classList.remove('open');
+    toast(`ตั้งคะแนนโหวตเป็น ${n} คะแนนต่อคนแล้ว`);
+    return;
+  }
+
+  if(t.dataset.act){
+    const id = t.dataset.id;
+    if(t.dataset.act === 'pin'){
+      await mutate(b=>{ const p=b.posts.find(x=>x.id===id); if(p) p.pinned = !p.pinned; });
+      toast('อัปเดตการปักหมุดแล้ว');
+    }
+    if(t.dataset.act === 'move'){
+      const cid = t.dataset.col;
+      await mutate(b=>{ const p=b.posts.find(x=>x.id===id); if(p) p.col = cid; });
+      toast('ย้ายโพสต์แล้ว');
+    }
+    if(t.dataset.act === 'del'){
+      if(confirm('ลบโพสต์นี้ถาวรใช่ไหม')){
+        await mutate(b=>{ b.posts = b.posts.filter(x=>x.id!==id); });
+        toast('ลบโพสต์แล้ว');
+      }
+    }
+    if(t.dataset.act === 'edit'){ openEdit(id); }
+  }
+});
+
+$('gearBtn').addEventListener('click', ()=> $('gearMenu').classList.toggle('open'));
+$('resetVotesBtn').addEventListener('click', async ()=>{
+  if(!confirm('ล้างคะแนนโหวตทั้งหมดเพื่อเริ่มรอบโหวตใหม่ใช่ไหม')) return;
+  await mutate(b=>{ b.posts.forEach(p=>p.votes = {}); });
+  $('gearMenu').classList.remove('open');
+  toast('ล้างคะแนนโหวตแล้ว — เริ่มรอบใหม่ได้เลย 🗳️');
+});
+$('layoutWall').addEventListener('click', async ()=>{ await mutate(b=>{ b.layout='wall'; }); });
+$('layoutCols').addEventListener('click', async ()=>{ await mutate(b=>{ b.layout='cols'; }); toast('ลากโพสต์ข้ามคอลัมน์ หรือใช้เมนู ••• เพื่อย้าย'); });
+
+document.addEventListener('keydown', async e=>{
+  if(e.key === 'Enter' && e.target.dataset && e.target.dataset.cinput) await sendComment(e.target.dataset.cinput);
+  if(e.key === 'Escape') closeModal('postOverlay');
+});
+document.addEventListener('change', async e=>{
+  if(e.target.dataset && e.target.dataset.colname){
+    const cid = e.target.dataset.colname, v = e.target.value.trim() || 'คอลัมน์';
+    await mutate(b=>{ const c = b.columns.find(x=>x.id===cid); if(c) c.name = v; });
+    toast('เปลี่ยนชื่อคอลัมน์แล้ว');
+  }
+});
+
+async function sendComment(pid){
+  const inp = document.querySelector(`[data-cinput="${pid}"]`);
+  const text = inp.value.trim(); if(!text) return;
+  inp.value = '';
+  await mutate(b=>{
+    const p = b.posts.find(x=>x.id===pid); if(!p) return;
+    (p.comments = p.comments || []).push({author:me.name, text, ts:Date.now()});
+  });
+  const box = document.querySelector(`.cmt-box[data-pid="${pid}"]`);
+  if(box){ box.classList.add('open'); box.querySelector('input').focus(); }
+}
+
+$('searchInput').addEventListener('input', render);
+$('sortSel').addEventListener('change', render);
+$('refreshBtn').addEventListener('click', async ()=>{ await loadBoard(); render(); toast('โหลดโพสต์ล่าสุดแล้ว'); });
+$('boardTitle').addEventListener('change', async e=>{
+  const v = e.target.value.trim() || 'กระดานความคิด จ.ภ.มุกดาหาร';
+  await mutate(b=>{ b.title = v; });
+  toast('เปลี่ยนชื่อกระดานแล้ว');
+});
+
+/* ================= post modal ================= */
+function buildColorRow(){
+  $('colorRow').innerHTML = NOTE_COLORS.map(c=>
+    `<button class="color-pick ${selColor===c.id?'sel':''}" data-color="${c.id}" style="background:${c.hex}" aria-label="สี ${c.id}"></button>`
+  ).join('');
+}
+$('colorRow').addEventListener('click', e=>{
+  const b = e.target.closest('[data-color]'); if(!b) return;
+  selColor = b.dataset.color; buildColorRow();
+});
+function openModal(id){ $(id).classList.add('open'); dirty = true; }
+function closeModal(id){ $(id).classList.remove('open'); dirty = false; }
+
+function buildColSelect(){
+  const show = board && board.layout === 'cols';
+  $('colField').style.display = show ? 'block' : 'none';
+  if(show) $('pCol').innerHTML = board.columns.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('');
+}
+function resetPostForm(){
+  editingId = null; imgData = ''; selColor = 'yellow';
+  $('pTitle').value = $('pText').value = $('pUrl').value = $('pImgUrl').value = '';
+  $('imgPrev').style.display = 'none'; $('imgPrev').src = '';
+  $('postModalTitle').textContent = 'สร้างโพสต์ใหม่';
+  $('postSaveBtn').textContent = 'โพสต์ลงกระดาน';
+  buildColorRow(); buildColSelect();
+}
+function openEdit(id){
+  const p = board.posts.find(x=>x.id===id); if(!p) return;
+  resetPostForm();
+  editingId = id;
+  $('pTitle').value = p.title || '';
+  $('pText').value = p.text || '';
+  $('pUrl').value = p.url || '';
+  if(board.layout==='cols') $('pCol').value = p.col;
+  if(p.img && p.img.startsWith('data:')){ imgData = p.img; $('imgPrev').src = p.img; $('imgPrev').style.display='block'; }
+  else $('pImgUrl').value = p.img || '';
+  selColor = p.color || 'yellow'; buildColorRow();
+  $('postModalTitle').textContent = 'แก้ไขโพสต์';
+  $('postSaveBtn').textContent = 'บันทึกการแก้ไข';
+  openModal('postOverlay');
+}
+$('newPostBtn').addEventListener('click', ()=>{ resetPostForm(); openModal('postOverlay'); $('pTitle').focus(); });
+$('fabBtn').addEventListener('click', ()=>{ resetPostForm(); openModal('postOverlay'); $('pTitle').focus(); });
+
+$('imgDrop').addEventListener('click', ()=> $('imgFile').click());
+$('imgFile').addEventListener('change', e=>{
+  const f = e.target.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = ev=>{
+    const img = new Image();
+    img.onload = ()=>{
+      const cv = document.createElement('canvas');
+      const scale = Math.min(1, 900/img.width);
+      cv.width = Math.round(img.width*scale); cv.height = Math.round(img.height*scale);
+      cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height);
+      imgData = cv.toDataURL('image/jpeg', .72);
+      if(imgData.length > 700000){ imgData=''; toast('รูปใหญ่เกินไป ลองรูปที่เล็กลง'); return; }
+      $('imgPrev').src = imgData; $('imgPrev').style.display = 'block'; $('pImgUrl').value = '';
+    };
+    img.src = ev.target.result;
+  };
+  r.readAsDataURL(f);
+});
+
+$('postSaveBtn').addEventListener('click', async ()=>{
+  const title = $('pTitle').value.trim();
+  const text = $('pText').value.trim();
+  const url = $('pUrl').value.trim();
+  const img = imgData || $('pImgUrl').value.trim();
+  const col = (board.layout==='cols' && $('pCol').value) ? $('pCol').value : (board.columns[0]||{}).id;
+  if(!title && !text && !img && !url){ toast('ใส่ข้อความหรือหัวข้ออย่างน้อยหนึ่งอย่าง'); return; }
+
+  if(editingId){
+    await mutate(b=>{
+      const p = b.posts.find(x=>x.id===editingId); if(!p) return;
+      Object.assign(p, {title, text, url, img, color:selColor, col, edited:true});
+    });
+    toast('บันทึกการแก้ไขแล้ว');
+  } else {
+    await mutate(b=>{
+      b.posts.push({ id:uid(), author:me.name, title, text, img, url, color:selColor, col,
+        ts:Date.now(), pinned:false, reactions:{love:[],like:[],wow:[],idea:[]}, comments:[], votes:{} });
+    });
+    toast('โพสต์ลงกระดานแล้ว 🎉');
+  }
+  closeModal('postOverlay');
+  resetPostForm();
+});
+
+/* ================= export ================= */
+$('exportBtn').addEventListener('click', ()=>{
+  const lines = [`# ${board.title}`, '', `> โรงเรียนวิทยาศาสตร์จุฬาภรณราชวิทยาลัย มุกดาหาร · ส่งออกเมื่อ ${new Date().toLocaleString('th-TH')} · ${board.posts.length} โพสต์`, ''];
+  const groups = board.layout==='cols'
+    ? board.columns.map(c=>({name:c.name, posts:sortPosts(board.posts.filter(p=>p.col===c.id))}))
+    : [{name:null, posts:sortPosts(board.posts)}];
+  for(const g of groups){
+    if(g.name) lines.push(`# 📊 ${g.name}`, '');
+    for(const p of g.posts){
+      const v = voteTotal(p);
+      lines.push(`## ${p.title || '(ไม่มีหัวข้อ)'}${p.pinned?' 📌':''}${v?` — 🗳️ ${v} โหวต`:''}`);
+      lines.push(`- **ผู้โพสต์:** ${p.author} · ${new Date(p.ts).toLocaleString('th-TH')}`);
+      if(p.text) lines.push('', p.text);
+      if(p.url) lines.push('', `🔗 ${p.url}`);
+      const r = Object.entries(p.reactions||{}).map(([k,arr])=>{
+        const rr = REACTS.find(x=>x.id===k); return arr.length ? `${rr.emo} ${arr.length}` : '';
+      }).filter(Boolean).join('  ');
+      if(r) lines.push('', `รีแอคชัน: ${r}`);
+      if(v){
+        const detail = Object.entries(p.votes).map(([n,c])=>`${n} (${c})`).join(', ');
+        lines.push(`ผู้โหวต: ${detail}`);
+      }
+      if((p.comments||[]).length){
+        lines.push('', '**คอมเมนต์:**');
+        p.comments.forEach(c=>lines.push(`- ${c.author}: ${c.text}`));
+      }
+      lines.push('', '---', '');
+    }
+  }
+  const blob = new Blob([lines.join('\n')], {type:'text/markdown;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (board.title||'pad-board').replace(/\s+/g,'-') + '.md';
+  a.click(); URL.revokeObjectURL(a.href);
+  toast('ส่งออกเป็นไฟล์ Markdown แล้ว');
+});
+
+/* ================= boot ================= */
+async function boot(){
+  buildColorRow();
+  await loadMe();
+  if(!me || !me.name){
+    openModal('nameOverlay');
+    $('nameInput').focus();
+  } else {
+    $('meName').textContent = me.name;
+    await loadBoard(); render();
+  }
+  setInterval(async ()=>{
+    if(dirty || dragId || document.querySelector('[data-cinput]:focus')
+      || document.activeElement === $('boardTitle')
+      || (document.activeElement && document.activeElement.dataset && document.activeElement.dataset.colname)) return;
+    await loadBoard(); render();
+  }, 8000);
+}
+async function saveName(){
+  const n = $('nameInput').value.trim();
+  if(!n){ toast('กรุณาใส่ชื่อก่อนเริ่มใช้งาน'); return; }
+  me = {name:n};
+  await saveMe();
+  $('meName').textContent = me.name;
+  closeModal('nameOverlay');
+  await loadBoard(); render();
+  toast(`สวัสดี ${n} 👋 ยินดีต้อนรับสู่ จ.ภ.มุกดาหาร`);
+}
+$('nameSaveBtn').addEventListener('click', saveName);
+$('nameInput').addEventListener('keydown', e=>{ if(e.key==='Enter') saveName(); });
+
+boot();
+</script>
+</body>
+</html>
